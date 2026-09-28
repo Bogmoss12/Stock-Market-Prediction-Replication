@@ -35,7 +35,7 @@ def add_interest_rate_spreads(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_target(df: pd.DataFrame, price_col: str) -> pd.DataFrame:
     # target = next day adj close
-    df["Taget"] = df[price_col].shift(-1)
+    df["Target"] = df[price_col].shift(-1)
     return df
 
 def build_feature_set(df: pd.DataFrame, price_col: str, config) -> pd.DataFrame:
