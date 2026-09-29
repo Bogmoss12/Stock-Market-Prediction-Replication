@@ -4,13 +4,15 @@ from fredapi import Fred
 
 def get_stock_data(ticker: str) -> pd.DataFrame:
     # download full historical OHLCV data for a single stock
-    df = yf.download(ticker, period="40y")
+    df = yf.download(ticker, period="40y", auto_adjust=False, multi_level_index=False)
+    df = df.drop(columns="Close")
     df = df.reset_index()
     return df
 
 def get_index_data(index_ticker: str) -> pd.DataFrame:
     # download an index's data, keep only Date + Adj Close, rename column
-    df = yf.download(index_ticker, period="40y")
+    df = yf.download(index_ticker, period="40y", auto_adjust=False, multi_level_index=False)
+    df = df.drop(columns="Close")
     df = df.reset_index()[["Date", "Adj Close"]]
     col_name = index_ticker.replace("^", "")
     df = df.rename(columns={"Adj Close": col_name})
