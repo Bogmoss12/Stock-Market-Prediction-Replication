@@ -10,5 +10,9 @@ SMA_WINDOWS = [5, 25, 50, 100, 200]
 EMA_WINDOWS = [10, 12, 20, 26, 50, 100, 200]
 MOM_WINDOWS = [2, 3, 4, 5]
 ROC_WINDOWS = [5, 10, 15, 20]
+WINDOW_SIZE = 100
+
+# training and testing ratio
+TRAIN_SPLIT = 0.80
 
 TOP_K_FEATURES = 20
