@@ -30,7 +30,7 @@ corr_top, skb_top = select_top_k_features(
 print("Correlation top-20: ", corr_top)
 print("SelectKBest top-20: ", skb_top)
 
-final_features = list(set(corr_top) & set(skb_top))
+final_features = sorted(set(corr_top) & set(skb_top))
 final_df = feature_df[["Date"] + final_features + ["Target"]]
 final_df.to_csv("data/processed/final_dataset.csv", index=False)
 
