@@ -1,0 +1,4 @@
+# virtual environment with local library installs
+myenv/
+.env
+__pycache__/
