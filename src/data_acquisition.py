@@ -4,7 +4,7 @@ from fredapi import Fred
 
 def get_stock_data(ticker: str) -> pd.DataFrame:
     # download full historical OHLCV data for a single stock
-    df = yf.download(ticker, start="1980-12-12", end="2024-09-24", auto_adjust=False, multi_level_index=False)
+    df = yf.download(ticker, start="1980-12-12", end="2024-09-28", auto_adjust=False, multi_level_index=False)
     # df = yf.download(ticker, period="40y", auto_adjust=False, multi_level_index=False)
     df = df.drop(columns="Close")
     df = df.reset_index()
@@ -12,7 +12,7 @@ def get_stock_data(ticker: str) -> pd.DataFrame:
 
 def get_index_data(index_ticker: str) -> pd.DataFrame:
     # download an index's data, keep only Date + Adj Close, rename column
-    df = yf.download(index_ticker, start="1980-12-12", end="2020-09-24", auto_adjust=False, multi_level_index=False)
+    df = yf.download(index_ticker, start="1980-12-12", end="2020-09-28", auto_adjust=False, multi_level_index=False)
     # df = yf.download(index_ticker, period="40y", auto_adjust=False, multi_level_index=False)
     df = df.drop(columns="Close")
     df = df.reset_index()[["Date", "Adj Close"]]
