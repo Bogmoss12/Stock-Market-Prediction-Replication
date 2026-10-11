@@ -63,7 +63,7 @@ def run_bayesian_optimization():
     feature_cols = [col for col in final_df.columns if col not in ["Date", "Target"]]
     target_col = "Target"
     
-    # Prepare training and validation subsets
+    # Prepare training subsets
     x_train, x_test, y_train, y_test, scaler = prepare_model_data(
         df=final_df,
         feature_cols=feature_cols,
