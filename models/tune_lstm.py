@@ -74,7 +74,7 @@ def run_bayesian_optimization():
     print("Initializing Bayesian Optimization tuner...")
     tuner = kt.BayesianOptimization(
         hypermodel=build_tunable_lstm,
-        objective='val_loss',           # Minimize validation Mean Squared Error
+        objective='loss',           # Minimize validation Mean Squared Error
         max_trials=10,                  # Total number of trial iterations to test
         executions_per_trial=1,         # Number of models built/trained per trial
         directory='keras_tuner_logs',
@@ -83,8 +83,8 @@ def run_bayesian_optimization():
     
     # Setup callbacks for the tuning search process
     tuner_callbacks = [
-        EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True, verbose=1),
-        ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, min_lr=1e-6, verbose=0)
+        EarlyStopping(monitor='loss', patience=5, restore_best_weights=True, verbose=1),
+        ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3, min_lr=1e-6, verbose=0)
     ]
     
     print("\nStarting Bayesian Optimization search...")
@@ -92,7 +92,6 @@ def run_bayesian_optimization():
         x_train, y_train,
         epochs=30,
         batch_size=32,
-        validation_split=0.15,          # Use 15% of training data for internal validation during tuning
         callbacks=tuner_callbacks,
         verbose=1
     )

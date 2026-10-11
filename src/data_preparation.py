@@ -27,7 +27,7 @@ def create_sequences(scaled_data: np.ndarray, window_size: int):
     # To target the last column in scaled data with 20 features (21 columns incl target var)
     for i in range(window_size, len(scaled_data)):
         x.append(scaled_data[i - window_size:i, :-1])
-        y.append(scaled_data[i, -1])
+        y.append(scaled_data[i -1, -1])
 
     return np.array(x), np.array(y)
 
