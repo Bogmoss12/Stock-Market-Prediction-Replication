@@ -11,7 +11,7 @@ def scale_dataset(df: pd.DataFrame, feature_cols: list, target_col: str):
     scaled_data = scaler.fit_transform(data_to_scale)
 
     scaled_df = pd.DataFrame(scaled_data, columns=feature_cols + [target_col])
-    
+
     # Exclude date in scaling
     if "Date" in df.columns:
         scaled_df.insert(0, "Date", df["Date"].values)
