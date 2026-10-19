@@ -8,3 +8,4 @@ tensorflow==2.21.0
 keras-tuner==1.4.8
 tensorboard==2.21.0
 tensorboard-data-server==0.7.2
+xgboost==3.4.1
