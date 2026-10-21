@@ -1,0 +1,9 @@
+{
+  "cnn_filters": [
+    128,
+    256,
+    64
+  ],
+  "gru_units": 256,
+  "gru_dropout": 0.1
+}

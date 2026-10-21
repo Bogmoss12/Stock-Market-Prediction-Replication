@@ -1,0 +1,10 @@
+Layer Type,Units/Filters,Dropout Rate,Activation,Input Shape,Output Shape
+Conv1D,224,-,relu,"(None, 100, 20)","(None, 100, 224)"
+MaxPooling1D,-,-,-,"(None, 100, 224)","(None, 50, 224)"
+Conv1D,64,-,relu,"(None, 50, 224)","(None, 50, 64)"
+MaxPooling1D,-,-,-,"(None, 50, 64)","(None, 25, 64)"
+LSTM,256,-,tanh,"(None, 25, 64)","(None, 25, 256)"
+Dropout,-,0.1,-,"(None, 25, 256)","(None, 25, 256)"
+LSTM,256,-,tanh,"(None, 25, 256)","(None, 256)"
+Dropout,-,0.1,-,"(None, 256)","(None, 256)"
+Dense,1,-,linear,"(None, 256)","(None, 1)"
