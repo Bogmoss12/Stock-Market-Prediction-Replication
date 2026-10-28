@@ -223,14 +223,14 @@ def run_10_fold_cross_validation():
 
     # Models to evaluate
     models_to_evaluate = {
-        #"LSTM": ("dl", lambda: build_final_lstm(n_features)),
+        "LSTM": ("dl", lambda: build_final_lstm(n_features)),
         "GRU": ("dl", lambda: build_final_gru(n_features)),
-        #"LSTM + GRU": ("dl", lambda: build_final_lstm_gru(n_features)),
-        #"CNN + GRU": ("dl", lambda: build_final_cnn_gru(n_features)),
-        #"CNN + LSTM": ("dl", lambda: build_final_cnn_lstm(n_features)),
-        #"RNN": ("dl", lambda: build_final_rnn(n_features)),
-        #"GRU + RNN": ("dl", lambda: build_final_gru_rnn(n_features)),
-        #"LSTM + RNN": ("dl", lambda: build_final_lstm_rnn(n_features)),
+        "LSTM + GRU": ("dl", lambda: build_final_lstm_gru(n_features)),
+        "CNN + GRU": ("dl", lambda: build_final_cnn_gru(n_features)),
+        "CNN + LSTM": ("dl", lambda: build_final_cnn_lstm(n_features)),
+        "RNN": ("dl", lambda: build_final_rnn(n_features)),
+        "GRU + RNN": ("dl", lambda: build_final_gru_rnn(n_features)),
+        "LSTM + RNN": ("dl", lambda: build_final_lstm_rnn(n_features)),
         "XGBoost": ("xgb", build_final_xgboost)
     }
 
