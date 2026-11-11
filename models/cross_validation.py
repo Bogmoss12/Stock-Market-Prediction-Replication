@@ -274,14 +274,45 @@ def run_10_fold_cross_validation():
                 y_true = inverse_scale_target(scaler_test, y_test_3d, n_features)
 
             else:
-                model = builder_fn()
-                model.fit(x_train_2d, y_train_2d, verbose=False)
+                prev_real_train = np.roll(y_train_2d, 1)
+                prev_real_train[0] = y_train_2d[0]
 
-                y_pred_scaled = model.predict(x_test_2d)
+                base_model = builder_fn()
+                base_model.fit(x_train_2d, y_train_2d, verbose=False)
+                prev_pred_train = np.roll(base_model.predict(x_train_2d), 1)
+                prev_pred_train[0] = y_train_2d[0]
+
+                x_train_aug = np.column_stack([x_train_2d, prev_real_train, prev_pred_train])
+                model = builder_fn()
+                model.fit(x_train_aug, y_train_2d, verbose=False)
+
+                y_pred_scaled = []
+                last_real = y_train_2d[-1]
+                last_pred = prev_pred_train[-1]
+
+                for i in range(len(x_test_2d)):
+                    current_x_aug = np.append(x_test_2d[i], [last_real, last_pred]).reshape(1, -1)
+                    pred = model.predict(current_x_aug)[0]
+                    y_pred_scaled.append(pred)
+
+                    # Update state for the next day's prediction
+                    last_pred = pred
+                    last_real = y_test_2d[i]
+
+                y_pred_scaled = np.array(y_pred_scaled)
                 y_pred = inverse_scale_target(scaler_test, y_pred_scaled, n_features)
                 y_true = inverse_scale_target(scaler_test, y_test_2d, n_features)
 
             metrics = evaluate_predictions(y_true, y_pred)
+
+            # Save fold prices for plotting
+            os.makedirs("results/cross_validation/fold_predictions", exist_ok=True)
+            file_name = model_name.lower().replace(" + ", "_").replace(" ", "_")
+            pd.DataFrame({
+                "Date": final_df["Date"].values[test_idx],
+                "Real_Values": y_true,
+                "Predicted_Values": y_pred
+            }).to_csv(f"results/cross_validation/fold_predictions/{file_name}_fold_{fold_idx}.csv", index=False)
 
             all_model_fold_Metrics[model_name].append({
                 "Fold": f"Fold {fold_idx}",
