@@ -223,14 +223,14 @@ def run_10_fold_cross_validation():
 
     # Models to evaluate
     models_to_evaluate = {
-        "LSTM": ("dl", lambda: build_final_lstm(n_features)),
-        "GRU": ("dl", lambda: build_final_gru(n_features)),
-        "LSTM + GRU": ("dl", lambda: build_final_lstm_gru(n_features)),
-        "CNN + GRU": ("dl", lambda: build_final_cnn_gru(n_features)),
-        "CNN + LSTM": ("dl", lambda: build_final_cnn_lstm(n_features)),
-        "RNN": ("dl", lambda: build_final_rnn(n_features)),
-        "GRU + RNN": ("dl", lambda: build_final_gru_rnn(n_features)),
-        "LSTM + RNN": ("dl", lambda: build_final_lstm_rnn(n_features)),
+        #"LSTM": ("dl", lambda: build_final_lstm(n_features)),
+        #"GRU": ("dl", lambda: build_final_gru(n_features)),
+        # "LSTM + GRU": ("dl", lambda: build_final_lstm_gru(n_features)),
+        # "CNN + GRU": ("dl", lambda: build_final_cnn_gru(n_features)),
+        # "CNN + LSTM": ("dl", lambda: build_final_cnn_lstm(n_features)),
+        #"RNN": ("dl", lambda: build_final_rnn(n_features)),
+        # "GRU + RNN": ("dl", lambda: build_final_gru_rnn(n_features)),
+        # "LSTM + RNN": ("dl", lambda: build_final_lstm_rnn(n_features)),
         "XGBoost": ("xgb", build_final_xgboost)
     }
 
@@ -274,32 +274,34 @@ def run_10_fold_cross_validation():
                 y_true = inverse_scale_target(scaler_test, y_test_3d, n_features)
 
             else:
-                prev_real_train = np.roll(y_train_2d, 1)
-                prev_real_train[0] = y_train_2d[0]
+                # prev_real_train = np.roll(y_train_2d, 1)
+                # prev_real_train[0] = y_train_2d[0]
 
-                base_model = builder_fn()
-                base_model.fit(x_train_2d, y_train_2d, verbose=False)
-                prev_pred_train = np.roll(base_model.predict(x_train_2d), 1)
-                prev_pred_train[0] = y_train_2d[0]
+                # base_model = builder_fn()
+                # base_model.fit(x_train_2d, y_train_2d, verbose=False)
+                # prev_pred_train = np.roll(base_model.predict(x_train_2d), 1)
+                # prev_pred_train[0] = y_train_2d[0]
 
-                x_train_aug = np.column_stack([x_train_2d, prev_real_train, prev_pred_train])
+                # x_train_aug = np.column_stack([x_train_2d, prev_real_train, prev_pred_train])
                 model = builder_fn()
-                model.fit(x_train_aug, y_train_2d, verbose=False)
+                model.fit(x_train_2d, y_train_2d, verbose=False)
+                # model.fit(x_train_aug, y_train_2d, verbose=False)
 
-                y_pred_scaled = []
-                last_real = y_train_2d[-1]
-                last_pred = prev_pred_train[-1]
+                # y_pred_scaled = []
+                # last_real = y_train_2d[-1]
+                # last_pred = prev_pred_train[-1]
+                y_pred_scaled = model.predict(x_test_2d)
 
-                for i in range(len(x_test_2d)):
-                    current_x_aug = np.append(x_test_2d[i], [last_real, last_pred]).reshape(1, -1)
-                    pred = model.predict(current_x_aug)[0]
-                    y_pred_scaled.append(pred)
+                # for i in range(len(x_test_2d)):
+                #     current_x_aug = np.append(x_test_2d[i], [last_real, last_pred]).reshape(1, -1)
+                #     pred = model.predict(current_x_aug)[0]
+                #     y_pred_scaled.append(pred)
 
-                    # Update state for the next day's prediction
-                    last_pred = pred
-                    last_real = y_test_2d[i]
+                #     # Update state for the next day's prediction
+                #     last_pred = pred
+                #     last_real = y_test_2d[i]
 
-                y_pred_scaled = np.array(y_pred_scaled)
+                # y_pred_scaled = np.array(y_pred_scaled)
                 y_pred = inverse_scale_target(scaler_test, y_pred_scaled, n_features)
                 y_true = inverse_scale_target(scaler_test, y_test_2d, n_features)
 
